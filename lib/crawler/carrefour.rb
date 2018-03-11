@@ -31,7 +31,7 @@ module Crawler
 
         current_count += items.size
 
-        return items if previous_count == current_count
+        return items if crawl_complete?(previous_count, current_count)
 
         previous_count = current_count
         execute_num += 1
@@ -50,6 +50,10 @@ module Crawler
         end
 
         result
+      end
+
+      def crawl_complete?(previous_count, current_count)
+        previous_count == current_count
       end
     end
   end
