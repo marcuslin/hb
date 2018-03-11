@@ -1,0 +1,7 @@
+development:
+ carrefour:
+  url: "https://online.carrefour.com.tw/"
+test:
+ carrefour:
+  url: "https://online.carrefour.com.tw/"
+
