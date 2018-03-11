@@ -37,11 +37,7 @@ module Crawler
           all('.indexProList').each do |item|
             items << to_hash_format(item)
           end
-
-          puts items
         end
-
-        puts "current_page: #{page}, pages_left: #{page_num}"
 
         return items if page_num.empty?
         fetch_items(page_num.shift(1).first,
