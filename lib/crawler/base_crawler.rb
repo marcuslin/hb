@@ -46,6 +46,10 @@ module Crawler
          "accept-language": 'zh-tw'
       }
     end
+
+    def wait_for_js(sec)
+      sleep sec
+    end
   end
 end
 

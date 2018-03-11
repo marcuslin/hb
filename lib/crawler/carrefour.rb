@@ -12,10 +12,9 @@ module Crawler
 
       def crawl
         visit "#{SITE_URL}search?key=#{key_word}"
-        sleep 10
-        results = to_hash_format(fetch_items)
+        wait_for_js 10
 
-        return results
+        to_hash_format(fetch_items)
       end
 
       private
@@ -24,7 +23,7 @@ module Crawler
         items = ''
         current_count = 0
         execute_script('window.scroll(0,999999);')
-        sleep 5
+        wait_for_js 5
 
         within(".items-block") do
           items = all('.item-product')
@@ -48,9 +47,9 @@ module Crawler
                       item_price: item.find('.discount-price').text,
                       img_src: item.find('.label-wrap .center-block')['src']
           }					
-        end;0
+        end
 
-        return result
+        result
       end
     end
   end

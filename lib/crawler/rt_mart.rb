@@ -12,9 +12,9 @@ module Crawler
 
       def crawl
         visit SITE_URL
-        sleep 5
+        wait_for_js 5
         search_item
-        sleep 5
+        wait_for_js 5
         fetch_items
       end
 
@@ -30,7 +30,7 @@ module Crawler
       def fetch_items(page = 1, page_num = fetch_page_arr, items = [])
         unless page == 1
           paginate_elements[page - 1].click
-          sleep 5
+          wait_for_js 5
         end
 
         within('.FOR_MAIN') do
@@ -44,15 +44,13 @@ module Crawler
                     page_num,
                     items
                    )
-      end;0
+      end
 
       def fetch_page_arr
         page_num = []
-
         page_size = paginate_elements.size / 2
-        page_num = (2..page_size).to_a
 
-        return page_num
+        (2..page_size).to_a
       end
 
       def paginate_elements
