@@ -3,7 +3,7 @@ module Crawler
     SITE_URL = Figaro.env.carrefour_url
 
     class Base < BaseCrawler
-      attr_reader :key_word, :browser
+      attr_reader :key_word
 
       def initialize(key_word)
         poltergeist_driver
@@ -11,8 +11,6 @@ module Crawler
       end
 
       def crawl
-        prod_count = 0
-
         visit "#{SITE_URL}search?key=#{key_word}"
         sleep 10
         results = to_hash_format(fetch_items)
