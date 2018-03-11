@@ -1,6 +1,6 @@
 module Crawler
   module RtMart
-    SITE_URL = Figaro.env.rt_mart_url
+    SITE_URL = "http://www.rt-mart.com.tw/direct/".freeze
 
     class Base < BaseCrawler
       attr_reader :key_word

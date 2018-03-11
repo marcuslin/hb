@@ -1,6 +1,2 @@
 development:
-  carrefour_url: "https://online.carrefour.com.tw/"
-  rt_mart_url: "http://www.rt-mart.com.tw/direct/"
 test:
-  carrefour_url: "https://online.carrefour.com.tw/"
-  rt_mart_url: "http://www.rt-mart.com.tw/direct/"

@@ -1,6 +1,6 @@
 module Crawler
   module Carrefour
-    SITE_URL = Figaro.env.carrefour_url
+    SITE_URL = "https://online.carrefour.com.tw/".freeze
 
     class Base < BaseCrawler
       attr_reader :key_word
