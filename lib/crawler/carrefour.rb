@@ -46,7 +46,6 @@ module Crawler
         result = []
 
         items.each do |item|
-          puts item.find('.item-name').text
           result << { item_name: item.find('.item-name').text,
                       item_price: item.find('.discount-price').text,
                       img_src: item.find('.label-wrap .center-block')['src']
