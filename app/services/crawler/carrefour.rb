@@ -10,6 +10,10 @@ module Crawler
         @key_word = url_encode(key_word)
       end
 
+      def call
+        self.crawl
+      end
+
       def crawl
         visit "#{SITE_URL}search?key=#{key_word}"
         wait_for_js 10
@@ -23,7 +27,7 @@ module Crawler
         items = ''
         current_count = 0
         execute_script('window.scroll(0,999999);')
-        wait_for_js 5
+        wait_for_js 1
 
         within(".items-block") do
           items = all('.item-product')
@@ -49,6 +53,7 @@ module Crawler
           }					
         end
 
+        Rails.logger.tagged { Rails.logger.info("finish fetching") }
         result
       end
 

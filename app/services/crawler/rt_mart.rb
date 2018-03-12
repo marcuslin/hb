@@ -10,11 +10,15 @@ module Crawler
         @key_word = key_word
       end
 
+      def call
+        self.crawl
+      end
+
       def crawl
         visit SITE_URL
-        wait_for_js 5
+        wait_for_js 1
         search_item
-        wait_for_js 5
+        wait_for_js 1
         fetch_items
       end
 
@@ -30,7 +34,7 @@ module Crawler
       def fetch_items(page = 1, page_num = fetch_page_arr, items = [])
         unless page == 1
           paginate_elements[page - 1].click
-          wait_for_js 5
+          wait_for_js 1
         end
 
         within('.FOR_MAIN') do
@@ -61,7 +65,7 @@ module Crawler
 
       def to_hash_format(item)
         {
-          item_name: item.find('.for_proname').text,
+          item_name: item.find('.for_proname').text.gsub(/[a-zA-Z0-9\-\*\,\/ ]/, ''),
           item_price: item.find('.for_pricebox').text,
           img_src: item.find('.for_imgbox img')['src']
         }
