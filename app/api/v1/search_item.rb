@@ -20,7 +20,7 @@ module V1
         rt_result = CacheItem.fetch("#{key_word}_rt", expires_in: 1.hour) {
           RtCrawler.new(key_word).call.to_json
         }
-        
+
         { 
           car: carrefour_result,
           rt: rt_result
