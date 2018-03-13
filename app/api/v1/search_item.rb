@@ -10,21 +10,11 @@ module V1
         requires :key_word
       end
 
-      post '/' do
-        key_word = params[:key_word]
+      post '/', jbuilder: 'search/result' do
+        @key_word = params[:key_word]
 
-        carrefour_result = CacheItem.fetch("#{key_word}_carrefour", expires_in: 1.hour) {
-          CarrefourCrawler.new(key_word).call.to_json
-        }
-
-        rt_result = CacheItem.fetch("#{key_word}_rt", expires_in: 1.hour) {
-          RtCrawler.new(key_word).call.to_json
-        }
-
-        { 
-          car: carrefour_result,
-          rt: rt_result
-        }
+        @carrefour_results = CarrefourCrawler.new(@key_word).call.to_json
+        @rt_results = RtCrawler.new(@key_word).call.to_json
       end
     end
   end
