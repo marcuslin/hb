@@ -11,7 +11,9 @@ module Crawler
       end
 
       def call
-        self.crawl
+        Rails.cache.fetch("#{key_word}_rt_mart") do
+          crawl
+        end
       end
 
       def crawl

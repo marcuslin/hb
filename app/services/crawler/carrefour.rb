@@ -8,7 +8,12 @@ module Crawler
       def initialize(key_word)
         poltergeist_driver
         @key_word = url_encode(key_word)
-        binding.pry
+      end
+
+      def call
+        Rails.cache.fetch("#{key_word}_carrefour") do
+          crawl
+        end
       end
 
       def crawl
