@@ -11,7 +11,7 @@ module Crawler
       end
 
       def call
-        Rails.cache.fetch("#{key_word}_carrefour") do
+        Rails.cache.fetch("#{key_word}_carrefour", expires_in: 1.hour) do
           crawl
         end
       end

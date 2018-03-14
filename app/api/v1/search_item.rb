@@ -11,9 +11,7 @@ module V1
 
         @carrefour_results = carrefour_crawler.new(@key_word).crawl.to_json
 
-        @rt_results = CacheItem.fetch("#{@key_word}_rt", expires_in: 1.hour) {
-          rt_mart_crawler.new(@key_word).call.to_json
-        }
+        @rt_results = rt_mart_crawler.new(@key_word).call.to_json
       end
     end
   end
