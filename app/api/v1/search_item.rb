@@ -1,5 +1,7 @@
 module V1
   class SearchItem < Grape::API
+    CacheItem = ActiveSupport::Cache::MemoryStore.new
+
     resource :search do
       desc "Search"
       params do
@@ -9,7 +11,7 @@ module V1
       post '/', jbuilder: 'search/result' do
         @key_word = params[:key_word]
 
-        @carrefour_results = carrefour_crawler.new(@key_word).crawl.to_json
+        @carrefour_results = carrefour_crawler.new(@key_word).call.to_json
 
         @rt_results = rt_mart_crawler.new(@key_word).call.to_json
       end
