@@ -8,10 +8,7 @@ module Crawler
       def initialize(key_word)
         poltergeist_driver
         @key_word = url_encode(key_word)
-      end
-
-      def call
-        self.crawl
+        binding.pry
       end
 
       def crawl

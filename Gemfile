@@ -29,11 +29,17 @@ group :development, :test do
   gem 'grape_on_rails_routes'
   gem 'byebug', platform: :mri
   gem 'pry'
+  gem 'rspec-rails', '~> 3.7'
 end
 
 group :development do
   gem 'web-console', '>= 3.3.0'
   gem 'listen', '~> 3.0.5'
+end
+
+group :test do
+  gem 'shoulda-matchers', '~> 3.1'
+  gem 'shoulda-callback-matchers', '~> 1.1.1'
 end
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
