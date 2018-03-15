@@ -1,24 +1,27 @@
-# README
+# Setting up
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+PhantomJS
+---
+* Using pahntomJS to handle some of the javascript part while crawling,
 
-Things you may want to cover:
+  `brew install phantomjs`.
 
-* Ruby version
+API
+---
+##### [GET] /api/:version/search
+Search item from Carrefour and RT mart
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+##### parameters
+* required
+```
+{
+	key_word: <String>
+}
+```
+* Optional
+	* This is used for sorting item by price, value can be both `asc` or `desc`
+```
+{
+	sort_by: <String>
+}
+```

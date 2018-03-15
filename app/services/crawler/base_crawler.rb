@@ -55,11 +55,11 @@ module Crawler
       value.gsub('$', '').to_i
     end
 
-    def filter_with_asc
+    def sort_with_asc
       results.sort_by { |result| result[:item_price] }
     end
 
-    def filter_with_desc
+    def sort_with_desc
       results.sort_by { |result| result[:item_price] }.reverse
     end
   end

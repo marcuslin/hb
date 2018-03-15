@@ -3,16 +3,16 @@ module Crawler
     SITE_URL = "http://www.rt-mart.com.tw/direct/".freeze
 
     class Base < BaseCrawler
-      attr_reader :key_word, :filter_type
+      attr_reader :key_word, :sort_type
 
-      def initialize(key_word, filter_type)
+      def initialize(key_word, sort_type)
         poltergeist_driver
         @key_word = key_word
-        @filter_type = filter_type
+        @sort_type = sort_type
       end
 
       def call
-        self.send("filter_with_#{filter_type}")
+        self.send("sort_with_#{sort_type}")
       end
 
       def results
