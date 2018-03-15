@@ -12,9 +12,9 @@ describe V1::SearchItem do
       .and_return(results)
   end
 
-  describe 'POST /api/v1/search' do
+  describe 'GET /api/v1/search' do
     context 'with valid key word' do
-      subject { post "/api/v1/search", params: { key_word: key_word } }
+      subject { get "/api/v1/search", params: { key_word: key_word } }
 
       before { subject }
 

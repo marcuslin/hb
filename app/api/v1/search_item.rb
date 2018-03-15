@@ -8,12 +8,12 @@ module V1
         requires :key_word, allow_blank: false
       end
 
-      post '/', jbuilder: 'search/result' do
+      get '/', jbuilder: 'search/result' do
         @key_word = params[:key_word]
 
-        @carrefour_results = carrefour_crawler.new(@key_word).call.to_json
+        @carrefour_results = carrefour_crawler.new(@key_word).call
 
-        @rt_results = rt_mart_crawler.new(@key_word).call.to_json
+        @rt_results = rt_mart_crawler.new(@key_word).call
       end
     end
   end
