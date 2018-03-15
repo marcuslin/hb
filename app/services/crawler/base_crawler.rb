@@ -62,6 +62,10 @@ module Crawler
     def sort_with_desc
       results.sort_by { |result| result[:item_price] }.reverse
     end
+
+		def limit_reached?(items)
+			items.size >= limit
+		end
   end
 end
 

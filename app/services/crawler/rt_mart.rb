@@ -3,12 +3,13 @@ module Crawler
     SITE_URL = "http://www.rt-mart.com.tw/direct/".freeze
 
     class Base < BaseCrawler
-      attr_reader :key_word, :sort_type
+      attr_reader :key_word, :sort_type, :limit
 
-      def initialize(key_word, sort_type)
+      def initialize(key_word, sort_type, limit)
         poltergeist_driver
         @key_word = key_word
         @sort_type = sort_type
+				@limit = limit
       end
 
       def call
@@ -50,7 +51,7 @@ module Crawler
           end
         end
 
-        return items if page_num.empty?
+        return items.take(limit) if page_num.empty? || limit_reached?(items)
         fetch_items(page_num.shift(1).first,
                     page_num,
                     items
