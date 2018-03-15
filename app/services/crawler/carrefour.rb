@@ -50,7 +50,7 @@ module Crawler
 
         items.each do |item|
           result << { item_name: item.find('.item-name').text,
-                      item_price: item.find('.discount-price').text,
+                      item_price: parse_to_int(item.find('.discount-price').text),
                       img_src: item.find('.label-wrap .center-block')['src']
           }					
         end

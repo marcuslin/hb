@@ -50,6 +50,10 @@ module Crawler
     def wait_for_js(sec)
       sleep sec
     end
+
+    def parse_to_int(value)
+      value.gsub('$', '').to_i
+    end
   end
 end
 
