@@ -67,7 +67,7 @@ module Crawler
 
       def to_hash_format(item)
         {
-          item_name: item.find('.for_proname').text.gsub(/[a-zA-Z0-9\-\*\,\/ ]/, ''),
+          item_name: item.find('.for_proname').text,
           item_price: item.find('.for_pricebox').text,
           img_src: item.find('.for_imgbox img')['src']
         }
