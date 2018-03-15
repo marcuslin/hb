@@ -18,7 +18,7 @@ module Crawler
 
       def crawl
         visit "#{SITE_URL}search?key=#{key_word}"
-        wait_for_js 10
+        wait_for_js 5
 
         to_hash_format(fetch_items)
       end
