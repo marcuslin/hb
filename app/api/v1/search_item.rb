@@ -7,7 +7,7 @@ module V1
       params do
         requires :key_word, allow_blank: false, type: String
         optional :sort_type, allow_blank: false, values: ['asc', 'desc'], default: 'asc'
-				optional :limit, type: Integer, default: 9999
+				optional :limit, type: Integer, default: 30
       end
 
       get '/', jbuilder: 'search/result' do
