@@ -18,8 +18,8 @@ describe V1::SearchItem do
 
       before { subject }
 
-      it 'returns 201' do
-        expect(response).to have_http_status 201
+      it 'returns 200' do
+        expect(response).to have_http_status 200
       end
 
       it 'returns search results with key_word as key' do
@@ -36,7 +36,7 @@ describe V1::SearchItem do
     end
 
     context 'with invalid key word' do
-      subject { post "/api/v1/search", params: { key_word: '' } }
+      subject { get "/api/v1/search", params: { key_word: '' } }
 
       before { subject }
 
