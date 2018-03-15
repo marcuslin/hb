@@ -8,7 +8,7 @@ PhantomJS
 
 API
 ---
-##### [GET] /api/:version/search
+##### [GET] /api/v1/search
 Search item from Carrefour and RT mart
 
 ##### parameters
