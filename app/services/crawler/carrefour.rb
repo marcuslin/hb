@@ -3,14 +3,19 @@ module Crawler
     SITE_URL = "https://online.carrefour.com.tw/".freeze
 
     class Base < BaseCrawler
-      attr_reader :key_word
+      attr_reader :key_word, :filter_type
 
-      def initialize(key_word)
+      def initialize(key_word, filter_type)
         poltergeist_driver
         @key_word = url_encode(key_word)
+        @filter_type = filter_type
       end
 
       def call
+        self.send("filter_with_#{filter_type}")
+      end
+
+      def results
         Rails.cache.fetch("#{key_word}_carrefour", expires_in: 1.hour) do
           crawl
         end
@@ -55,7 +60,6 @@ module Crawler
           }					
         end
 
-        Rails.logger.tagged { Rails.logger.info("finish fetching") }
         result
       end
 

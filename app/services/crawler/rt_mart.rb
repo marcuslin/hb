@@ -3,14 +3,19 @@ module Crawler
     SITE_URL = "http://www.rt-mart.com.tw/direct/".freeze
 
     class Base < BaseCrawler
-      attr_reader :key_word
+      attr_reader :key_word, :filter_type
 
-      def initialize(key_word)
+      def initialize(key_word, filter_type)
         poltergeist_driver
         @key_word = key_word
+        @filter_type = filter_type
       end
 
       def call
+        self.send("filter_with_#{filter_type}")
+      end
+
+      def results
         Rails.cache.fetch("#{key_word}_rt_mart", expires_in: 1.hour) do
           crawl
         end

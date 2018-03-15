@@ -54,6 +54,14 @@ module Crawler
     def parse_to_int(value)
       value.gsub('$', '').to_i
     end
+
+    def filter_with_asc
+      results.sort_by { |result| result[:item_price] }
+    end
+
+    def filter_with_desc
+      results.sort_by { |result| result[:item_price] }.reverse
+    end
   end
 end
 
