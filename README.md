@@ -2,9 +2,9 @@
 
 PhantomJS
 ---
-* Using pahntomJS to handle some of the javascript part while crawling,
+* Using pahntomJS to handle some of the javascript part while crawling
 
-  `brew install phantomjs`.
+  `brew install phantomjs`
 
 API
 ---
