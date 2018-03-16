@@ -29,7 +29,7 @@ Search item from Carrefour and RT mart
 * Optional
 	- There might be too many items in the search results which will lead to a 1+ minute total crawl time,
 		so I decide to set default crawl item size by `30` in order to decrease crawl time.
-		Please feel free to fill in any desired number for this.
+		Please feel free to fill in any desired number for crawling more items.
 ```
 {
 	limit: <Integer>
