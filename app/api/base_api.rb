@@ -1,11 +1,11 @@
 class BaseApi < Grape::API
   helpers do
     def carrefour_crawler
-      Crawler::Carrefour::Base
+      Crawler::Carrefour
     end
 
     def rt_mart_crawler
-      Crawler::RtMart::Base
+      Crawler::RtMart
     end
   end
 
