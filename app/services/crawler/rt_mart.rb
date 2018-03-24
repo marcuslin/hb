@@ -1,83 +1,53 @@
 module Crawler
-  module RtMart
-    SITE_URL = "http://www.rt-mart.com.tw/direct/".freeze
+	class RtMart < BaseCrawler
+		SITE_URL = "http://www.rt-mart.com.tw/direct/".freeze
 
-    class Base < BaseCrawler
-      attr_reader :key_word, :sort_type, :limit
+		attr_reader :agent, :key_word, :item_count
 
-      def initialize(key_word, sort_type, limit)
-        poltergeist_driver
-        @key_word = key_word
-        @sort_type = sort_type
-				@limit = limit
-      end
+		def initialize(key_word)
+			@agent = Mechanize.new
+			@key_word = key_word
+			@item_count = fetch_contents.search('div.left_title span').last.text
+		end
 
-      def call
-        self.send("sort_with_#{sort_type}")
-      end
+		def call
+			crawl
+		end
 
-      def results
-        Rails.cache.fetch("#{key_word}_rt_mart", expires_in: 1.hour) do
-          crawl
-        end
-      end
+		def crawl
+			to_hash_format(fetch_contents.search('.indexProList'))
+		end
 
-      def crawl
-        visit SITE_URL
-        wait_for_js 1
-        search_item
-        wait_for_js 1
-        fetch_items
-      end
+		private
 
-      private
+		def fetch_contents
+			agent.get(SITE_URL, payload)
+		end
 
-      def search_item
-        within('.search') do
-          find('#prod_keyword').set(key_word)
-          find('#btn_submit').click
-        end
-      end
+		def payload
+			{
+				action: 'product_search',
+				prod_keyword: key_word,
+				p_data_num: item_count
+			}
+		end
 
-      def fetch_items(page = 1, page_num = fetch_page_arr, items = [])
-        unless page == 1
-          paginate_elements[page - 1].click
-          wait_for_js 1
-        end
+		def to_hash_format(items)
+			results = []
 
-        within('.FOR_MAIN') do
-          all('.indexProList').each do |item|
-            items << to_hash_format(item)
-          end
-        end
+			items.each do |item|
+				results << {
+					item_name: item.search('.for_proname').text,
+					item_price: price_to_int(item.search('.for_pricebox div').text),
+					img_src: item.search('img').first.attributes['src'].value
+				}
+			end
 
-        return items.take(limit) if page_num.empty? || limit_reached?(items)
-        fetch_items(page_num.shift(1).first,
-                    page_num,
-                    items
-                   )
-      end
+			results
+		end
 
-      def fetch_page_arr
-        page_num = []
-        page_size = paginate_elements.size / 2
-
-        (2..page_size).to_a
-      end
-
-      def paginate_elements
-        within('.FOR_MAIN') do
-          page_obj = all('.list_num')
-        end
-      end
-
-      def to_hash_format(item)
-        {
-          item_name: item.find('.for_proname').text,
-          item_price: parse_to_int(item.find('.for_pricebox').text),
-          img_src: item.find('.for_imgbox img')['src']
-        }
-      end
-    end
-  end
+		def price_to_int(value)
+			value.gsub('$', '').to_i
+		end
+	end
 end
