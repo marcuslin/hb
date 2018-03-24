@@ -1,72 +1,52 @@
 module Crawler
-	module Carrefour
-		SITE_URL = "https://online.carrefour.com.tw/".freeze
+	class Carrefour < BaseCrawler
+		SITE_URL = "https://online.carrefour.com.tw/CarrefourECProduct/GetSearchJson".freeze
 
-		class Base < BaseCrawler
-			attr_reader :key_word, :sort_type, :limit
+		attr_reader :key_word, :item_count
 
-			def initialize(key_word, sort_type, limit)
-				poltergeist_driver
-				@key_word = url_encode(key_word)
-				@sort_type = sort_type
-				@limit = limit
+		def initialize(key_word)
+			@key_word = url_encode(key_word)
+			@item_count = fetch_item['Count']
+		end
+
+		def call
+			crawl
+		end
+
+		def crawl
+			to_hash_format(fetch_item['ProductListModel'])
+		end
+
+		private
+
+		def fetch_item
+			json_result(RestClient.post(SITE_URL, { key: key_word, PageSize: item_count }))['content']
+		end
+
+		def crawl_complete?(item_count)
+			DEFAULT_ITEM_SIZE == item_count
+		end
+
+		def json_result(results)
+			JSON.parse(results)
+		end
+
+		def to_hash_format(items)
+			results = []
+
+			items.each do |item|
+				results << {
+					item_name: "#{item['Name']} #{item['ItemQtyPerPackFormat']}",
+					item_price: price_for(item).to_i,
+					img_src: item['PictureUrl']
+				}
 			end
 
-			def call
-				self.send("sort_with_#{sort_type}")
-			end
+			results
+		end
 
-			def results
-				Rails.cache.fetch("#{key_word}_carrefour", expires_in: 1.hour) do
-					crawl
-				end
-			end
-
-			def crawl
-				visit "#{SITE_URL}search?key=#{key_word}"
-				wait_for_js 1
-
-				to_hash_format(fetch_items)
-			end
-
-			private
-
-			def fetch_items(previous_count = 0, execute_num = 1)
-				items = ''
-				current_count = 0
-				execute_script('window.scroll(0,999999);')
-				wait_for_js 3
-
-				within(".items-block") do
-					items = all('.item-product')
-				end
-
-				current_count += items.size
-
-				return items.take(limit) if crawl_complete?(previous_count, current_count) && limit_reached?(items)
-
-				previous_count = current_count
-				execute_num += 1
-
-				fetch_items(previous_count, execute_num)
-			end
-
-			def to_hash_format(items)
-				result = []
-
-				items.each do |item|
-					result << { item_name: item.find('.item-name').text,
-								 item_price: parse_to_int(item.find('.discount-price').text),
-								 img_src: item.find('.label-wrap .center-block')['src']
-					}					
-				end
-
-				result
-			end
-
-			def crawl_complete?(previous_count, current_count)
-				previous_count == current_count
-			end
+		def price_for(item)
+			item['SpecialPrice'].blank? ? item['Price'] : item['SpecialPrice']
 		end
 	end
 end
