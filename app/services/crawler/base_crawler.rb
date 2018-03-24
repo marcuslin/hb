@@ -1,71 +1,12 @@
 require 'uri'
-require 'capybara/rails'
-require 'capybara/dsl'
-require 'capybara/poltergeist'
+require 'mechanize'
 
 module Crawler
   class BaseCrawler
-    include Capybara::DSL
     include ERB::Util
 
     def initialize
     end
-
-    def poltergeist_driver(image_enabled = false)
-      phantomjs_options = []
-      if image_enabled
-        phantomjs_options = [
-          '--proxy-type=none',
-          '--ignore-ssl-errors=yes',
-          '--ssl-protocol=any',
-          '--web-security=false'
-        ]
-      else
-        phantomjs_options = [
-          '--proxy-type=none',
-          '--load-images=no',
-          '--ignore-ssl-errors=yes',
-          '--ssl-protocol=any',
-          '--web-security=false'
-        ]
-      end
-      driver_options = {
-        timeout: 30,
-        window_size: [1280, 1440],
-        js_errors: false,
-        phantomjs_options: phantomjs_options
-      }
-      Capybara.register_driver :poltergeist do |app|
-        Capybara::Poltergeist::Driver.new(app, driver_options)
-      end
-      Capybara.javascript_driver = :poltergeist
-      Capybara.current_driver = Capybara.javascript_driver
-      Capybara::Session.new(:poltergeist)
-      page.driver.headers =
-        {"user-agent": 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36.',
-         "accept-language": 'zh-tw'
-      }
-    end
-
-    def wait_for_js(sec)
-      sleep sec
-    end
-
-    def parse_to_int(value)
-      value.gsub('$', '').to_i
-    end
-
-    def sort_with_asc
-      results.sort_by { |result| result[:item_price] }
-    end
-
-    def sort_with_desc
-      results.sort_by { |result| result[:item_price] }.reverse
-    end
-
-		def limit_reached?(items)
-			items.size >= limit
-		end
   end
 end
 
