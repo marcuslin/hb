@@ -2,26 +2,19 @@ module Crawler
 	class Carrefour < BaseCrawler
 		SITE_URL = "https://online.carrefour.com.tw/CarrefourECProduct/GetSearchJson".freeze
 
-		attr_reader :key_word, :item_count
-
-		def initialize(key_word)
-			@key_word = url_encode(key_word)
-			@item_count = fetch_item['Count']
-		end
-
 		def call
-      to_hash_format(fetch_item['ProductListModel'])
+      to_hash_format(fetch_contents['ProductListModel'])
 		end
+
+    def fetch_contents
+      json_result(RestClient.post(SITE_URL, { key: key_word, PageSize: item_count }))['content']
+    end
+
+    def fetch_count
+      fetch_contents['Count']
+    end
 
 		private
-
-		def fetch_item
-			json_result(RestClient.post(SITE_URL, { key: key_word, PageSize: item_count }))['content']
-		end
-
-		def crawl_complete?(item_count)
-			DEFAULT_ITEM_SIZE == item_count
-		end
 
 		def json_result(results)
 			JSON.parse(results)
