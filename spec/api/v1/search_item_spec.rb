@@ -5,10 +5,10 @@ describe V1::SearchItem do
   let(:results) { crawl_results }
 
   before do
-    allow_any_instance_of(Crawler::Carrefour::Base).to receive(:call)
+    allow_any_instance_of(Crawler::Carrefour).to receive(:call)
       .and_return(results)
 
-    allow_any_instance_of(Crawler::RtMart::Base).to receive(:call)
+    allow_any_instance_of(Crawler::RtMart).to receive(:call)
       .and_return(results)
   end
 
