@@ -11,11 +11,7 @@ module Crawler
 		end
 
 		def call
-			crawl
-		end
-
-		def crawl
-			to_hash_format(fetch_contents.search('.indexProList'))
+      to_hash_format(fetch_contents.search('.indexProList'))
 		end
 
 		private

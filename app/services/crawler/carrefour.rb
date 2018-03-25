@@ -10,11 +10,7 @@ module Crawler
 		end
 
 		def call
-			crawl
-		end
-
-		def crawl
-			to_hash_format(fetch_item['ProductListModel'])
+      to_hash_format(fetch_item['ProductListModel'])
 		end
 
 		private
